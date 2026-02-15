@@ -205,7 +205,7 @@ class LoginUI {
             this.authManager.setCurrentUser(result.user);
             this.showToast(`Welcome back, ${result.user.name}!`);
             setTimeout(() => {
-                window.location.href = 'client-portal.html';
+                window.location.href = 'client.html';
             }, 1000);
         } else {
             this.showToast('Invalid client credentials. Please try again.');
@@ -235,3 +235,4 @@ class LoginUI {
 
 // Initialize the login UI
 const loginUI = new LoginUI();
+
