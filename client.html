@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Pro - Client Portal</title>
+    <link rel="stylesheet" href="client.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="client-header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">💪</span>
+                <span class="logo-text">FitTrack Pro</span>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span class="user-name" id="clientNameDisplay">John Smith</span>
+                    <span class="user-role">Client</span>
+                </div>
+                <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="client-main">
+        <div class="container">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <h1>Welcome back, <span id="clientName">John</span>! 💪</h1>
+                <p>Ready to crush your fitness goals?</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon sessions">🏋️</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Sessions Remaining</div>
+                        <div class="stat-value" id="sessionsRemaining">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon upcoming">📅</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Upcoming Sessions</div>
+                        <div class="stat-value" id="upcomingCount">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon completed">✅</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Completed Sessions</div>
+                        <div class="stat-value" id="completedCount">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-section">
+                <button class="btn btn-primary btn-large" id="bookSessionBtn">
+                    <span>➕</span> Book New Session
+                </button>
+            </div>
+
+            <!-- Upcoming Sessions -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Your Upcoming Sessions</h2>
+                </div>
+                <div class="card-body">
+                    <div id="upcomingSessionsList" class="sessions-list">
+                        <!-- Sessions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session History -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Session History</h2>
+                    <select id="historyFilter" class="form-select-small">
+                        <option value="all">All Time</option>
+                        <option value="thisMonth">This Month</option>
+                        <option value="lastMonth">Last Month</option>
+                    </select>
+                </div>
+                <div class="card-body">
+                    <div id="sessionHistory" class="sessions-list">
+                        <!-- History will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Time Slots Calendar -->
+            <div class="card" id="availableSlotsSection" style="display: none;">
+                <div class="card-header">
+                    <h2>Available Time Slots</h2>
+                    <button class="btn btn-secondary btn-small" id="closeAvailableSlots">Close</button>
+                </div>
+                <div class="card-body">
+                    <div class="calendar-navigation">
+                        <button class="btn-icon" id="prevWeek">‹</button>
+                        <h3 id="currentWeek">Week of Jan 1, 2024</h3>
+                        <button class="btn-icon" id="nextWeek">›</button>
+                    </div>
+                    <div id="weeklySlots" class="weekly-slots">
+                        <!-- Time slots will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Book Session Modal -->
+    <div class="modal" id="bookSessionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Book a New Session</h2>
+                <button class="modal-close" id="closeBookModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bookSessionForm">
+                    <div class="form-group">
+                        <label for="sessionDate">Preferred Date</label>
+                        <input type="date" id="sessionDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionTime">Preferred Time</label>
+                        <select id="sessionTime" class="form-control" required>
+                            <option value="">Select a time</option>
+                            <option value="06:00">6:00 AM</option>
+                            <option value="07:00">7:00 AM</option>
+                            <option value="08:00">8:00 AM</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="19:00">7:00 PM</option>
+                            <option value="20:00">8:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionWorkoutType">Workout Type</label>
+                        <select id="sessionWorkoutType" class="form-control" required>
+                            <option value="Strength Training">Strength Training</option>
+                            <option value="Cardio">Cardio</option>
+                            <option value="HIIT">HIIT</option>
+                            <option value="Yoga">Yoga</option>
+                            <option value="CrossFit">CrossFit</option>
+                            <option value="Boxing">Boxing</option>
+                            <option value="Personal Training">Personal Training</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionDuration">Duration</label>
+                        <select id="sessionDuration" class="form-control" required>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60" selected>60 minutes</option>
+                            <option value="90">90 minutes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionNotes">Notes (Optional)</label>
+                        <textarea id="sessionNotes" class="form-control" rows="3" placeholder="Any special requests or goals for this session?"></textarea>
+                    </div>
+                    <div class="booking-info">
+                        <p><strong>Note:</strong> Your booking request will be sent to your trainer for confirmation. You'll receive an email once it's approved.</p>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelBookBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Request Booking</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="client.js"></script>
+</body>
+</html>

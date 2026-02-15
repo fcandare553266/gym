@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Pro - Training Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">💪</span>
+                <span class="logo-text">FitTrack Pro</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-page="calendar">
+                <span class="nav-icon">📅</span>
+                <span class="nav-text">Calendar</span>
+            </a>
+            <a href="#" class="nav-item" data-page="clients">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Clients</span>
+            </a>
+            <a href="#" class="nav-item" data-page="sessions">
+                <span class="nav-icon">🏋️</span>
+                <span class="nav-text">Sessions</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">AD</div>
+                <div class="user-info">
+                    <div class="user-name">Admin</div>
+                    <div class="user-role">Administrator</div>
+                </div>
+            </div>
+            <button class="btn btn-secondary btn-full" id="logoutBtn" style="margin-top: 15px; width: 100%; padding: 10px;">Logout</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <section class="page active" id="dashboard">
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <button class="btn btn-primary" id="addSessionBtn">
+                    <span>➕</span> New Session
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon clients">👥</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Total Clients</div>
+                        <div class="stat-value" id="totalClients">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon sessions">📅</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Sessions Today</div>
+                        <div class="stat-value" id="sessionsToday">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon payments">💰</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Pending Payments</div>
+                        <div class="stat-value" id="pendingPayments">$0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Sessions -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Today's Schedule</h2>
+                </div>
+                <div class="card-body">
+                    <div id="todaySchedule" class="schedule-list">
+                        <!-- Sessions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Upcoming Sessions</h2>
+                </div>
+                <div class="card-body">
+                    <div id="upcomingSessions" class="schedule-list">
+                        <!-- Upcoming sessions will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Page -->
+        <section class="page" id="calendar">
+            <div class="page-header">
+                <h1>Calendar</h1>
+                <button class="btn btn-primary" id="addSessionBtnCalendar">
+                    <span>➕</span> New Session
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="calendar-header">
+                        <button class="btn-icon" id="prevMonth">‹</button>
+                        <h2 id="currentMonth">January 2024</h2>
+                        <button class="btn-icon" id="nextMonth">›</button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-day-header">Sun</div>
+                        <div class="calendar-day-header">Mon</div>
+                        <div class="calendar-day-header">Tue</div>
+                        <div class="calendar-day-header">Wed</div>
+                        <div class="calendar-day-header">Thu</div>
+                        <div class="calendar-day-header">Fri</div>
+                        <div class="calendar-day-header">Sat</div>
+                    </div>
+                    <div id="calendarDays" class="calendar-days-grid"></div>
+                </div>
+            </div>
+
+            <!-- Selected Date Sessions -->
+            <div class="card" id="selectedDateCard" style="display: none;">
+                <div class="card-header">
+                    <h2 id="selectedDateTitle">Sessions for Selected Date</h2>
+                </div>
+                <div class="card-body">
+                    <div id="selectedDateSessions" class="schedule-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clients Page -->
+        <section class="page" id="clients">
+            <div class="page-header">
+                <h1>Client Management</h1>
+                <button class="btn btn-primary" id="addClientBtn">
+                    <span>➕</span> Add Client
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Sessions Remaining</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientsTableBody">
+                                <!-- Clients will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sessions Page -->
+        <section class="page" id="sessions">
+            <div class="page-header">
+                <h1>All Sessions</h1>
+                <div class="filter-group">
+                    <select id="sessionFilter" class="form-select">
+                        <option value="all">All Sessions</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Client</th>
+                                    <th>Workout Type</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sessionsTableBody">
+                                <!-- Sessions will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add/Edit Session Modal -->
+    <div class="modal" id="sessionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="sessionModalTitle">Add New Session</h2>
+                <button class="modal-close" id="closeSessionModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="sessionForm">
+                    <input type="hidden" id="sessionId">
+                    <div class="form-group">
+                        <label for="sessionClient">Client Name</label>
+                        <select id="sessionClient" class="form-control" required>
+                            <option value="">Select a client</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sessionDate">Date</label>
+                            <input type="date" id="sessionDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sessionTime">Time</label>
+                            <input type="time" id="sessionTime" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sessionDuration">Duration (minutes)</label>
+                            <select id="sessionDuration" class="form-control" required>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60" selected>60 minutes</option>
+                                <option value="90">90 minutes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sessionWorkoutType">Workout Type</label>
+                            <select id="sessionWorkoutType" class="form-control" required>
+                                <option value="Strength Training">Strength Training</option>
+                                <option value="Cardio">Cardio</option>
+                                <option value="HIIT">HIIT</option>
+                                <option value="Yoga">Yoga</option>
+                                <option value="CrossFit">CrossFit</option>
+                                <option value="Boxing">Boxing</option>
+                                <option value="Personal Training">Personal Training</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionNotes">Notes (Optional)</label>
+                        <textarea id="sessionNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelSessionBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Session</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Client Modal -->
+    <div class="modal" id="clientModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="clientModalTitle">Add New Client</h2>
+                <button class="modal-close" id="closeClientModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="clientForm">
+                    <input type="hidden" id="clientId">
+                    <div class="form-group">
+                        <label for="clientName">Full Name</label>
+                        <input type="text" id="clientName" class="form-control" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="clientEmail">Email</label>
+                            <input type="email" id="clientEmail" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientPhone">Phone</label>
+                            <input type="tel" id="clientPhone" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="clientSessions">Sessions Purchased</label>
+                            <input type="number" id="clientSessions" class="form-control" min="0" value="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientStatus">Status</label>
+                            <select id="clientStatus" class="form-control" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelClientBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Client</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
