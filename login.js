@@ -216,7 +216,7 @@ class LoginUI {
         if (role === 'admin') {
             window.location.href = 'index.html';
         } else {
-            window.location.href = 'client-portal.html';
+            window.location.href = 'client.html';
         }
     }
 
